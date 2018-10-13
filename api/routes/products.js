@@ -30,13 +30,14 @@ router.get('/:productID', (req, res, next) => {
 
 router.patch('/:productID', (req, res, next) => {
     res.status(200).json({
-        message: "You are Updated"
+        message: "You are Updated",
     });
 });
 
 router.delete('/:productID', (req, res, next) => {
     res.status(200).json({
-        message: "You are Deleted"
+        message: "You are Deleted",
+        id: id
     });
 });
 
