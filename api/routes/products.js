@@ -13,4 +13,19 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.get('/:productID', (req, res, next) => {
+    const id = req.params.productID;
+    if(id == 'spatial') {
+        res.status(200).json({
+            message: 'You discover the spatial ID',
+            id: id
+        });
+    } else {
+         res.status(200).json({
+            message: 'You pass an ID',
+            id: id
+         });
+    }
+});
+
 module.exports = router;
