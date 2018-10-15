@@ -4,9 +4,17 @@ const mongoose = require("mongoose");
 const Product = require('../models/product');
 
 router.get("/", (req, res, next) => {
-    res.status(200).json({
-        message: "Handling GET request to /products"
-    });
+    Product.find()
+    .exec()
+    .then(docs => {
+        console.log(docs);
+        res.status(200).json(docs);
+    })
+    .catch(err => {
+        res.status(200).json({
+            message: err
+        });
+    })
 });
 
 router.post("/", (req, res, next) => {
@@ -19,43 +27,75 @@ router.post("/", (req, res, next) => {
         .save()
         .then(result => {
             console.log(result);
+            res.status(201).json({
+                message: "Handling POST request to /products",
+                Product: result
+            });
         })
-        .catch(err => console.log(err));
-    res.status(201).json({
-        message: "Handling POST request to /products",
-        Product: product
-    });
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 router.get("/:productID", (req, res, next) => {
     const id = req.params.productID;
-    if(id == "spatial") {
-        res.status(200).json({
-            message: "You discover the spatial ID",
-            id: id
+    Product.findById(id)
+    .exec()
+    .then(doc => {
+        console.log("From database", doc);
+        if(doc) {
+            res.status(200).json(doc);
+        } else {
+            res.status(404).json({
+                message: "No valid entry found for provided ID"
+            });
+        }
+        
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
         });
-    } else {
-         res.status(200).json({
-            message: "You pass an ID",
-            id: id
-         });
-    }
+    })
 });
 
 router.patch("/:productID", (req, res, next) => {
     const id = req.params.productID;
-    res.status(200).json({
-        message: "You are Updated",
-        id: id
-    });
+    const updateOps = {};
+    for(const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    Product.update({ _id: id }, { $set: updateOps })
+        .exec()
+        .then(result => {
+            console.log(result);
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 });
 
 router.delete("/:productID", (req, res, next) => {
     const id = req.params.productID;
-    res.status(200).json({
-        message: "You are Deleted",
-        id: id
-    });
+    Product.remove({ _id: id })
+    .exec()
+    .then(result => {
+        res.status(200).json(result);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    })
 });
 
 module.exports = router;
