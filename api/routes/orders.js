@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.get("/", (req, res, next) => {
     res.status(200).json({
-        message: "You are GET ordered"
+        message: "You are GET for all ordered"
     });
 });
 
