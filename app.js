@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 
-mongoose.connect('mongodb://node-api:node-api@node-api-shard-00-00-ww7uv.gcp.mongodb.net:27017,node-api-shard-00-01-ww7uv.gcp.mongodb.net:27017,node-api-shard-00-02-ww7uv.gcp.mongodb.net:27017/test?ssl=true&replicaSet=node-api-shard-0&authSource=admin&retryWrites=true', {
+mongoose.connect('mongodb://cost-counter:cost-counter@database-shard-00-00-v0ueh.gcp.mongodb.net:27017,database-shard-00-01-v0ueh.gcp.mongodb.net:27017,database-shard-00-02-v0ueh.gcp.mongodb.net:27017/house-renting?ssl=true&replicaSet=database-shard-0&authSource=admin&retryWrites=true', {
     useNewUrlParser: true
 })
 
